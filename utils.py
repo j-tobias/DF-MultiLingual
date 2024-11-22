@@ -89,6 +89,8 @@ class SpeechSegment:
     speaker: str  # speaker label
     overlap: bool # whether this segment contains overlapped speech
 
+
+# CURRENTLY ONLY AUDIO SPEAKER DIARIZATION --> AUDIO VISUAL SPEAKER DIARIZATION NEEDED !!!!!
 class DiarizationPipeline:
     def __init__(self, auth_token: str):
         """
@@ -369,46 +371,46 @@ class SegmentExtractor:
 
 
 
-id = "xgs5gOCpsAE"
-url = f"https://www.youtube.com/watch?v={id}"
-# path = download_video(url)
-# print("PATH: ", path)
-# extract_audio_from_video(f"downloads/{id}.mp4")
+# id = "xgs5gOCpsAE"
+# url = f"https://www.youtube.com/watch?v={id}"
+# # path = download_video(url)
+# # print("PATH: ", path)
+# # extract_audio_from_video(f"downloads/{id}.mp4")
 
 
-# # Process audio file
-# pipeline = DiarizationPipeline(auth_token=os.getenv("HF_BTPW"))
-# segments = pipeline.process_audio(
-#     f"downloads/{id}.wav",
-#     min_speakers=2,
-#     max_speakers=2
+# # # Process audio file
+# # pipeline = DiarizationPipeline(auth_token=os.getenv("HF_BTPW"))
+# # segments = pipeline.process_audio(
+# #     f"downloads/{id}.wav",
+# #     min_speakers=2,
+# #     max_speakers=2
+# # )
+# # print("Segments extracted")
+
+# # Example segment
+# segment = SpeechSegment(
+#     start=12.0,          # 12
+#     end=15.0,            # 28
+#     speaker="Speaker2",
+#     overlap=False
 # )
-# print("Segments extracted")
-
-# Example segment
-segment = SpeechSegment(
-    start=12.0,          # 12
-    end=15.0,            # 28
-    speaker="Speaker2",
-    overlap=False
-)
 
 
-extractor = SegmentExtractor(id, output_dir="segments")
-segment = extractor.extract_segment(
-        video_path=f"downloads/{id}.mp4",
-        audio_path=f"downloads/{id}.wav",
-        start_time=segment.start,
-        end_time=segment.end,
-        speaker=segment.speaker
-    )
+# extractor = SegmentExtractor(id, output_dir="segments")
+# segment = extractor.extract_segment(
+#         video_path=f"downloads/{id}.mp4",
+#         audio_path=f"downloads/{id}.wav",
+#         start_time=segment.start,
+#         end_time=segment.end,
+#         speaker=segment.speaker
+#     )
 
 
-segement = ExtractedSegment(
-    id,
-    video_path="segments_xgs5gOCpsAE/video/segment_12_0_to_15_0_Speaker2.mp4",
-    audio_path="segments_xgs5gOCpsAE/audio/segment_12_0_to_15_0_Speaker2.wav",
-    start_time=12.0,
-    end_time=15.0,
-    speaker="Speaker2"
-)
+# segement = ExtractedSegment(
+#     id,
+#     video_path="segments_xgs5gOCpsAE/video/segment_12_0_to_15_0_Speaker2.mp4",
+#     audio_path="segments_xgs5gOCpsAE/audio/segment_12_0_to_15_0_Speaker2.wav",
+#     start_time=12.0,
+#     end_time=15.0,
+#     speaker="Speaker2"
+# )
