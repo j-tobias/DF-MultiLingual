@@ -118,12 +118,7 @@ class Transcriber:
                 "text": None
             }
 
-
-
-
-
-
-
+# EXAMPLE USAGE
 # transcriber = Transcriber()
 # transcription = transcriber.transcribe("downloads/xgs5gOCpsAE.wav")
 # print("Transcription: ", transcription)

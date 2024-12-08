@@ -5,6 +5,7 @@ from scipy.io import wavfile
 
 
 class SpeechSynthesis:
+    # XTTS
 
     def __init__(self, configfile_path:str ="XTTS-checkpoint/config.json", checkpoint_dir:str ="XTTS-checkpoint") -> None:
         self.config = XttsConfig()
@@ -14,6 +15,9 @@ class SpeechSynthesis:
         self.model.load_checkpoint(self.config, checkpoint_dir=checkpoint_dir, eval=True)
 
     def synthesize(self, text:str, speaker_wav_path:str, gpt_cond_len:int=3, language:str="en") -> None:
+        """
+        Synthesize speech from a given text and a speaker audio.
+        """
         outputs = self.model.synthesize(
             text,
             self.config,

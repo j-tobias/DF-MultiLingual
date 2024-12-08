@@ -2,3 +2,5 @@
 /downloads
 __pycache__
 XTTS-checkpoint/
+/vits/
+/VITS-checkpoint/
