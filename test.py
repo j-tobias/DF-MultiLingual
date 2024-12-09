@@ -4,9 +4,6 @@ from transcript import Transcriber
 from llama3_2_3B import LLAMA
 import utils as u
 
-import os
-import json
-
 
 # id = "7DEPS1xWxkM"
 # url = f"https://www.youtube.com/watch?v={id}"
@@ -53,7 +50,6 @@ example_transcript = {
     'status': 'success'
 }
 
-
 chunks = example_transcript["chunks"]
 # chunks = transcript["chunks"]
 
@@ -65,6 +61,9 @@ for chunk in chunks:
     generated_changes = llama.generate(chunk)
     modified_chunks.append(generated_changes)
     print("Generated changes: ", generated_changes)
+
+
+
 
 
 

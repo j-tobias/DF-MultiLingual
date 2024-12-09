@@ -8,7 +8,15 @@ import torch
 from transformers import pipeline
 
 
+SYSTEM_PROMPT = """
+You are a helpful text modifier. Your target is to modify the provided text to invert its meaning to the opposite direction. The operation can be one of "delete", "insert" and "replace". Please generate output for the following input with 3 operations.
 
+
+[{"operation": "replace", "old_word": "great", "new_word": "terrible", "index": 4},
+{"operation": "delete", "old_word": "not", "new_word": None, "index": 17},
+{"operation": "insert", "old_word": None, "new_word": "not", "index": 24}]
+
+"""
 
 class LLAMA:
     def __init__(self):
@@ -23,13 +31,7 @@ class LLAMA:
 
 
         self.messages = [
-            {"role": "system", "content": """
-        You are a helpful text modifier. Your target is to modify the provided text to invert its meaning to the opposite direction. The operation can be one of "delete", "insert" and "replace". Please generate output for the following input with 3 operations.
-
-        [{"operation": "replace", "old_word": "great", "new_word": "terrible", "index": 4},
-        {"operation": "delete", "old_word": "not", "new_word": None, "index": 17},
-        {"operation": "insert", "old_word": None, "new_word": "not", "index": 24}]
-        """},
+            {"role": "system", "content": SYSTEM_PROMPT},
         ]
 
     def generate(self, prompt:str):
@@ -56,21 +58,7 @@ class LLAMA:
         return self.generate(prompt)
 
 
-SYSTEM_PROMPT = """You are an AI assistant helping to create a dataset for deepfake detection research. 
-Your task is to suggest realistic text modifications that could be used in malicious content manipulation.
-For each text segment, provide exactly 3 different manipulation operations that:
-1. Maintain grammatical correctness
-2. Change the meaning or sentiment significantly
-3. Represent realistic disinformation tactics
 
-Output format must be a JSON array with exactly 3 operations:
-[{
-    "operation": "replace"|"delete"|"insert",
-    "old_text": string|null,
-    "new_text": string|null,
-    "position": int,
-    "explanation": string
-}]"""
 
 # Define the output structure
 class TextOperation(BaseModel):
