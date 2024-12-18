@@ -1,8 +1,22 @@
+# Ignore all general Folders
 /segments
 /downloads
 __pycache__
-XTTS-checkpoint/
+
+
+# Ignore checkpoints
+Wav2Lip/checkpoints/wav2lip.pth
+
+# Ignore VITS - isn't used yet
 /vits/
 /VITS-checkpoint/
-/Wav2Lip/
-/temp/
+
+
+
+# Ignore all files in the folder
+temp/*
+XTTS-checkpoint/*
+
+# Do not ignore the folder itself
+!temp/
+!XTTS-checkpoint/

@@ -97,7 +97,7 @@ class Transcriber:
                 audio_array,
                 chunk_length_s=30,  # Process in 30-second chunks
                 batch_size=4,       # Adjust based on your GPU memory
-                return_timestamps=True
+                return_timestamps="word"  # Request word-level timestamps
             )
             
             # Add metadata to results
@@ -118,7 +118,10 @@ class Transcriber:
                 "text": None
             }
 
-# EXAMPLE USAGE
+# # EXAMPLE USAGE
 # transcriber = Transcriber()
-# transcription = transcriber.transcribe("downloads/xgs5gOCpsAE.wav")
+# transcription = transcriber.transcribe("downloads/7DEPS1xWxkM.wav")
 # print("Transcription: ", transcription)
+
+
+

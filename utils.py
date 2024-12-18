@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pydub import AudioSegment
 from yt_dlp import YoutubeDL
 from tqdm import tqdm
+import librosa
 import os
 
 
@@ -79,6 +80,58 @@ def extract_audio_from_video(video_path, output_audio_path=None):
     # Load video audio and export as wav
     audio = AudioSegment.from_file(video_path, format="mp4")
     audio.export(output_audio_path, format="wav")
+
+def replace_audio(
+        original_audio_path:str, 
+        new_audio_path:str, 
+        start_time:float, 
+        stop_time:float,
+        output_path:str = "temp/replaced_audio.wav")->None:
+    """
+    Replace a segement in an audio with another audio.
+
+    Args:
+        original_audio_path (str): Path to the original audio file
+        new_audio_path (str): Path to the new audio file
+        output_path (str): Path to save the output audio file
+        start_time (float): Start time in seconds
+        stop_time (float): End time in seconds
+    """
+
+    # Load original audio
+    # Load new audio
+    # Replace segment in original audio with new audio at start_time and stop_time
+    # Save the new audio file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @dataclass_json
