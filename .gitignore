@@ -4,6 +4,10 @@
 __pycache__
 
 
+# For personal Notes
+notes.md
+secrets.md
+
 # Ignore checkpoints
 Wav2Lip/checkpoints/wav2lip.pth
 
