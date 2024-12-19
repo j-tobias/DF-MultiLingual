@@ -26,7 +26,7 @@ def _load(checkpoint_path):
 
 def load_model(path):
 	model = Wav2Lip()
-	print("Load checkpoint from: {}".format(path))
+	#print("Load checkpoint from: {}".format(path))
 	checkpoint = _load(path)
 	s = checkpoint["state_dict"]
 	new_s = {}
@@ -270,20 +270,16 @@ class VideoSynthesis:
         print("total frames: ",int(np.ceil(float(len(self.mel_chunks))/batch_size)))
         # Create the progress bar
         pbar = tqdm(gen, total=int(np.ceil(float(len(self.mel_chunks))/batch_size)))
-        print("Progress bar created")
-        
+
+        pbar.set_description("Model loading...")
+        model = load_model(self.checkpoint_path)
+        pbar.set_description("Model loaded")
+
+        frame_h, frame_w = full_frames[0].shape[:-1]
+        out = cv2.VideoWriter('temp/result.avi', cv2.VideoWriter_fourcc(*'DIVX'), self.fps, (frame_w, frame_h))
+
         for i, (img_batch, mel_batch, frames, coords) in enumerate(pbar):
 
-            if i == 0:
-
-                print("Loading Wav2Lip model...")
-                model = load_model(self.checkpoint_path)
-                pbar.set_description("Model loaded")  # Update progress bar description
-                
-                frame_h, frame_w = full_frames[0].shape[:-1]
-                out = cv2.VideoWriter('temp/result.avi', 
-                                    cv2.VideoWriter_fourcc(*'DIVX'), self.fps, (frame_w, frame_h))
-                
             # Update progress with batch information
             pbar.set_postfix({
                 'batch': i,
@@ -320,7 +316,8 @@ class VideoSynthesis:
         out.release()
         command = 'ffmpeg -y -i {} -i {} -strict -2 -q:v 1 {}'.format(self.audio, 'temp/result.avi', self.outfile)
         subprocess.call(command, shell=platform.system() != 'Windows')      
-  
+
+
 
 # videosynth = VideoSynthesis(
 #     checkpoint_path="Wav2Lip/checkpoints/wav2lip.pth",
