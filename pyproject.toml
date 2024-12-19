@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "df-multilingual"
+version = "0.1.0"
+description = "Dataset for Multilingual Deepfake Localisation"
+authors = ["Justus Tobias <email@justus-tobias.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^1.21.0"
+scikit-learn = "^0.24.2"
+tensorflow = "^2.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
