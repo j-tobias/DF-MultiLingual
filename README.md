@@ -25,7 +25,7 @@ Our comprehensive dataset spans across 17 different languages, making it one of 
 
 The multi-language approach significantly expands the dataset's utility for developing globally effective deepfake detection systems.
 
-### Example Videos
+
 
 ### Example Videos
 
@@ -33,14 +33,15 @@ Below are sample videos demonstrating our multilingual deepfake capabilities:
 
 | Language | Video Description | Preview |
 |----------|------------------|---------|
-| English | This is a test message to check the quality of the synthesized speech. | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2en.mp4" controls width="320"> |
-| Spanish | Este es un mensaje de prueba para comprobar la calidad del discurso sintetizado. | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2es.mp4" controls width="320"> |
-| French | Il s'agit d'un message test pour vérifier la qualité de la parole synthétisée. | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2fr.mp4" controls width="320"> |
-| German | Dies ist eine Testnachricht zur Überprüfung der Qualität der synthetisierten Sprache. | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2de.mp4" controls width="320"> |
-| Hindi | यह संश्लेषित भाषण की गुणवत्ता की जांच करने के लिए एक परीक्षण संदेश है। | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2hi.mp4" controls width="320"> |
-| Russian | Это тестовое сообщение для проверки качества синтезированной речи. | <video src="https://github.com/j-tobias/DF_MultiLingual/raw/main/examples/output_de2ru.mp4" controls width="320"> |
+| English | This is a test message to check<br>the quality of the synthesized<br>speech. | <video src="examples/output_de2en.mp4" controls width="250"></video> |
+| Spanish | Este es un mensaje de prueba para<br>comprobar la calidad del discurso<br>sintetizado. | <video src="examples/output_de2es.mp4" controls width="250"></video> |
+| French | Il s'agit d'un message test pour<br>vérifier la qualité de la parole<br>synthétisée. | <video src="examples/output_de2fr.mp4" controls width="250"></video> |
+| German | Dies ist eine Testnachricht zur<br>Überprüfung der Qualität der<br>synthetisierten Sprache. | <video src="examples/output_de2de.mp4" controls width="250"></video> |
+| Hindi | यह संश्लेषित भाषण की गुणवत्ता<br>की जांच करने के लिए एक परीक्षण<br>संदेश है। | <video src="examples/output_de2hi.mp4" controls width="250"></video> |
+| Russian | Это тестовое сообщение для<br>проверки качества синтезированной<br>речи. | <video src="examples/output_de2ru.mp4" controls width="250"></video> |
 
 
+https://github.com/j-tobias/DF-MultiLingual/blob/main/examples/output_de2ru.mp4
 
 ## Getting Started
 
