@@ -318,6 +318,7 @@ class VideoSynthesis:
         subprocess.call(command, shell=platform.system() != 'Windows')      
 
 
+# Example usage:
 
 # videosynth = VideoSynthesis(
 #     checkpoint_path="Wav2Lip/checkpoints/wav2lip.pth",

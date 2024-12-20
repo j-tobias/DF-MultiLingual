@@ -1,6 +1,41 @@
 # Multilingual Deepfake Localisation
+This Project contains the first large scale Dataset for Multilingual Deepfake Localisation, designed to advance research in detecting and analyzing deepfake content across multiple languages. Our dataset includes:
 
-This Project contains the first large scale Dataset for Multilingual Deepfake Localisation
+- Over ... deepfake videos across 17 major languages
+- High-quality annotations for temporal localization
+- Diverse scenarios and manipulation techniques
+- Comprehensive metadata for each sample
+
+This groundbreaking collection enables researchers and developers to:
+- Train robust multilingual deepfake detection models
+- Evaluate cross-lingual generalization
+- Study language-specific manipulation patterns
+- Develop more effective countermeasures against deepfake threats
+
+Our dataset fills a critical gap in deepfake research by addressing the challenges of linguistic diversity in synthetic media detection.
+
+## Dataset Overview
+
+Our comprehensive dataset spans across 17 different languages, making it one of the most linguistically diverse deepfake detection resources available. This extensive language coverage ensures:
+
+- Broader representation of global speech patterns
+- More robust cross-cultural detection capabilities
+- Enhanced model generalization across diverse linguistic contexts
+- Better understanding of language-specific manipulation artifacts
+
+The multi-language approach significantly expands the dataset's utility for developing globally effective deepfake detection systems.
+
+### Example Videos
+
+| Language | Video Description | Preview |
+|----------|------------------|---------|
+| English | This is a test message to check the quality of the synthesized speech. | <video src="examples/output_de2en.mp4" controls width="320"></video> |
+| Spanish | Este es un mensaje de prueba para comprobar la calidad del discurso sintetizado. | <video src="/examples/output_de2es.mp4" controls width="320"></video> |
+| French | Il s'agit d'un message test pour vérifier la qualité de la parole synthétisée. | <video src="/examples/output_de2fr.mp4" controls width="320"></video> |
+| German | Dies ist eine Testnachricht zur Überprüfung der Qualität der synthetisierten Sprache. | <video src="/examples/output_de2de.mp4" controls width="320"></video> |
+| Hindi | यह संश्लेषित भाषण की गुणवत्ता की जांच करने के लिए एक परीक्षण संदेश है। | <video src="/examples/output_de2hi.mp4" controls width="320"></video> |
+| Russian | Это тестовое сообщение для проверки качества синтезированной речи. | <video src="/examples/output_de2ru.mp4" controls width="320"></video> |
+
 
 
 ## Getting Started
