@@ -103,9 +103,28 @@ def replace_audio(
     # Replace segment in original audio with new audio at start_time and stop_time
     # Save the new audio file
 
+def find_change(change: dict) -> List[Tuple[int, int]]:
+    """
+    find the difference between the old transcript and the new transcript, based off of the reported change.
+    return the start and end index of the change in the old transcript and the new transcript.
+    
+    Returns:
+        List[Tuple[int, int]]: List containing two tuples of (start, end) indices for old and new transcripts
+    """
+    old_transcript = change["old transcript"]
+    new_transcript = change["new transcript"]
+    old_change = change["change"]["old"]
+    new_change = change["change"]["new"]
 
+    # Find indices in old transcript
+    old_start_idx = old_transcript.find(old_change)
+    old_end_idx = old_start_idx + len(old_change)
 
+    # Find indices in new transcript
+    new_start_idx = new_transcript.find(new_change)
+    new_end_idx = new_start_idx + len(new_change)
 
+    return [(old_start_idx, old_end_idx), (new_start_idx, new_end_idx)]
 
 
 

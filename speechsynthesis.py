@@ -2,7 +2,8 @@ from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 from scipy.io import wavfile
 
-
+from typing import Tuple
+import numpy as np
 
 class SpeechSynthesis:
     # XTTS
@@ -14,7 +15,12 @@ class SpeechSynthesis:
         self.model = Xtts.init_from_config(self.config)
         self.model.load_checkpoint(self.config, checkpoint_dir=checkpoint_dir, eval=True)
 
-    def synthesize(self, text:str, speaker_wav_path:str, gpt_cond_len:int=3, language:str="en",output_file:str = "out_speechsynth.wav") -> None:
+    def synthesize(self, 
+                   text:str, 
+                   speaker_wav_path:str, 
+                   gpt_cond_len:int=3, 
+                   language:str="en",
+                   output_file:str = "out_speechsynth.wav") -> Tuple[np.ndarray, float]:
         """
         Synthesize speech from a given text and a speaker audio.
         """
@@ -30,9 +36,25 @@ class SpeechSynthesis:
         audio = outputs["wav"]
         wavfile.write(output_file, sample_rate, audio)
 
+        return audio, sample_rate
+
+
+
+
+
+
+
+
+
+
+
 
 # print("SpeechSynthesis class loaded")
 # speechsynth = SpeechSynthesis()
 # print("SpeechSynthesis instance created")
-# speechsynth.synthesize("I am here to demonstrate the capabilities of this speech synthesis system. This system can convert written text into spoken words using a pre-trained model. It can also mimic the voice of a given speaker, making the synthesized speech sound more natural and personalized.", "downloads/7DEPS1xWxkM.wav", language="en")
+# speechsynth.synthesize(
+#     text="In einer Welt, in der alles digital war, fand ein kleiner Junge eine Münze. Sie war aus glänzendem Kupfer und hatte ein seltsames Muster auf der Rückseite. Niemand wusste, was sie wert war oder wofür man sie noch benutzen konnte. Der Junge steckte sie in seine Tasche und trug sie wie einen Schatz.", 
+#     speaker_wav_path = "segments/segment_18_0_to_101_0_Boris Pistorius.wav", 
+#     language="de",
+#     output_file="out_de2de_Boris_speechsynth.wav")
 # print("Speech synthesized")
