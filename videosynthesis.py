@@ -259,7 +259,6 @@ class VideoSynthesis:
         del detector
         return results 
     
-
     def run(self):
         print("Starting inference...")
 

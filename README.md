@@ -14,6 +14,13 @@ This groundbreaking collection enables researchers and developers to:
 
 Our dataset fills a critical gap in deepfake research by addressing the challenges of linguistic diversity in synthetic media detection.
 
+
+## Notes
+
+I upgraded to a newer moviepy because the older version had trouble with .write_videofile() 
+the previous version was -> moviepy 1.0.3 & decorator-4.4.2 it's now moviepy-2.1.1
+
+
 ## Dataset Overview
 
 Our comprehensive dataset spans across 17 different languages, making it one of the most linguistically diverse deepfake detection resources available. This extensive language coverage ensures:

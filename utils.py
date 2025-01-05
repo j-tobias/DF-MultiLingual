@@ -1,4 +1,5 @@
-from moviepy.editor import VideoFileClip, AudioFileClip
+from moviepy import VideoFileClip, AudioFileClip
+from moviepy import concatenate_videoclips
 from dataclasses_json import dataclass_json
 from typing import List, Optional, Tuple
 from pyannote.audio import Pipeline
@@ -6,7 +7,10 @@ from dataclasses import dataclass
 from pydub import AudioSegment
 from yt_dlp import YoutubeDL
 from tqdm import tqdm
+import moviepy as mp
+import numpy as np
 import librosa
+import cv2
 import os
 
 
@@ -82,11 +86,11 @@ def extract_audio_from_video(video_path, output_audio_path=None):
     audio.export(output_audio_path, format="wav")
 
 def replace_audio(
-        original_audio_path:str, 
-        new_audio_path:str, 
-        start_time:float, 
-        stop_time:float,
-        output_path:str = "temp/replaced_audio.wav")->None:
+            original_audio_path:str, 
+            new_audio_path:str, 
+            start_time:float, 
+            stop_time:float,
+            output_path:str = "temp/replaced_audio.wav")->None:
     """
     Replace a segement in an audio with another audio.
 
@@ -97,11 +101,116 @@ def replace_audio(
         start_time (float): Start time in seconds
         stop_time (float): End time in seconds
     """
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     # Load original audio
+    original_audio = AudioSegment.from_wav(original_audio_path)
+    
     # Load new audio
-    # Replace segment in original audio with new audio at start_time and stop_time
-    # Save the new audio file
+    new_audio = AudioSegment.from_wav(new_audio_path)
+
+    # Convert times to milliseconds
+    start_ms = int(start_time * 1000)
+    stop_ms = int(stop_time * 1000)
+
+    # Split original audio and combine with new audio
+    first_part = original_audio[:start_ms]
+    last_part = original_audio[stop_ms:]
+    modified_audio = first_part + new_audio + last_part
+
+    # Export the result
+    modified_audio.export(output_path, format="wav")
+
+def replace_video(            
+        original_video_path:str, 
+        new_video_path:str, 
+        start_time:float, 
+        stop_time:float,
+        output_path:str = "temp/replaced_video.mp4")->None:
+    """
+    Replace a segment in a video with another video.
+
+    Args:
+        original_video_path (str): Path to the original video file
+        new_video_path (str): Path to the new video file
+        output_path (str): Path to save the output video file
+        start_time (float): Start time in seconds
+        stop_time (float): End time in seconds
+    """
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Load both videos
+    with VideoFileClip(original_video_path) as original_video:
+        with VideoFileClip(new_video_path) as new_video:
+        
+            # Split and concatenate videos
+            first_part = original_video.subclipped(0, start_time)
+            last_part = original_video.subclipped(stop_time)
+            final_video = concatenate_videoclips([first_part, new_video, last_part], method="compose")
+            
+            # Write the final video using moviepy's built-in method
+            final_video.write_videofile(
+                output_path, 
+                codec='libx264',
+                audio=False,  # No audio needed since we handle audio separately
+                preset='ultrafast',  # Faster encoding
+                threads=4  # Use multiple threads for faster processing
+            )
+            
+    print("Video replaced successfully")
+
+def merge_audio_video(audio_path:str, video_path:str, output_path:str = "temp/merged_video.mp4")->None:
+    """
+    Merge an audio file with a video file.
+
+    Args:
+        audio_path (str): Path to the audio file
+        video_path (str): Path to the video file
+        output_path (str): Path to save the output video file
+    """
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    # Load audio and video
+    audio = AudioFileClip(audio_path)
+    video = VideoFileClip(video_path)
+    
+    # Set audio duration to video duration
+    audio = audio.with_duration(video.duration)
+    
+    # Combine audio and video
+    video = video.with_audio(audio)
+    video.write_videofile(output_path, codec='libx264', audio_codec='aac', preset='ultrafast', threads=4)
+
+def extract_audio_segment(audio_path:str, start_time:float, stop_time:float, output_path:str = "temp/extracted_audio.wav")->None:
+    """
+    Extract a segment from an audio file.
+
+    Args:
+        audio_path (str): Path to the audio file
+        start_time (float): Start time in seconds
+        stop_time (float): End time in seconds
+        output_path (str): Path to save the output audio file
+    """
+    audio = AudioSegment.from_wav(audio_path)
+    audio = audio[start_time*1000:stop_time*1000]
+    audio.export(output_path, format="wav")
+
+def extract_video_segment(video_path:str, start_time:float, stop_time:float, output_path:str = "temp/extracted_video.mp4")->None:
+    """
+    Extract a segment from a video file.
+
+    Args:
+        video_path (str): Path to the video file
+        start_time (float): Start time in seconds
+        stop_time (float): End time in seconds
+        output_path (str): Path to save the output video file
+    """
+    video = VideoFileClip(video_path)
+    video = video.subclip(start_time, stop_time)
+    video.write_videofile(output_path, codec='libx264', audio=False, preset='ultrafast', threads=4)
 
 def find_change(change: dict) -> List[Tuple[int, int]]:
     """
@@ -111,21 +220,79 @@ def find_change(change: dict) -> List[Tuple[int, int]]:
     Returns:
         List[Tuple[int, int]]: List containing two tuples of (start, end) indices for old and new transcripts
     """
-    old_transcript = change["old transcript"]
-    new_transcript = change["new transcript"]
-    old_change = change["change"]["old"]
-    new_change = change["change"]["new"]
+    old_transcript = str(change["old transcript"]).split(" ")
+    new_transcript = str(change["new transcript"]).split(" ")
 
-    # Find indices in old transcript
-    old_start_idx = old_transcript.find(old_change)
-    old_end_idx = old_start_idx + len(old_change)
+    # Find start and end index of change for old transcript
+    old_start_idx = 0
+    old_end_idx = 0
+    for i in range(max(len(old_transcript), len(new_transcript))):
+        if old_transcript[i] != new_transcript[i]:
+            old_start_idx = i
+            break
 
-    # Find indices in new transcript
-    new_start_idx = new_transcript.find(new_change)
-    new_end_idx = new_start_idx + len(new_change)
+    for i in range(max(len(old_transcript), len(new_transcript))):
+        # compute diff and subtract
+        if old_transcript[-i] != new_transcript[-i]:
+            old_end_idx = max(len(old_transcript), len(new_transcript)) - i - 1
+            break
+    
+    print("Old Transcript: ", " ".join(old_transcript[old_start_idx:old_end_idx]))
+
+    new_start_idx = 0
+    new_end_idx = 0
+
+    for i in range(max(len(old_transcript), len(new_transcript))):
+        if new_transcript[i] != old_transcript[i]:
+            new_start_idx = i
+            break
+    
+    for i in range(min(len(old_transcript), len(new_transcript))):
+        if new_transcript[-i] != old_transcript[-i]:
+            new_end_idx = max(len(old_transcript), len(new_transcript)) - i + 1
+            break
+    
+    print("New Transcript: ", " ".join(new_transcript[new_start_idx:new_end_idx]))
 
     return [(old_start_idx, old_end_idx), (new_start_idx, new_end_idx)]
+    
 
+def segment_and_split(original_video_path: str, start_time: float, end_time: float):
+
+    original_video_path = "downloads/7DEPS1xWxkM.mp4"
+
+    # Load the video file
+    video = mp.VideoFileClip(original_video_path)
+
+    # Select segment from seconds 18 to 101
+    video_segment = video.subclipped(start_time, end_time)
+
+    # Extract audio from the segment
+    audio = video_segment.audio
+
+    # Save audio and video to temp folder
+    output_audio = "temp/new_original_audio.wav"
+    output_video = "temp/new_original_video.mp4"
+
+    try:
+        audio.write_audiofile(output_audio)
+        video_segment.write_videofile(output_video, 
+                                    codec='libx264',
+                                    audio_codec='aac',
+                                    temp_audiofile="temp/temp-audio.m4a",
+                                    remove_temp=True)
+    finally:
+        video.close()
+        video_segment.close()
+
+# import json
+# from llama3_2_3B import clean_dict
+
+# with open("examples/llama_output.json", "r") as f:
+#     llama_output = json.load(f)
+
+# llama_output = clean_dict(llama_output)
+# print("Change Indicated: ", find_change(llama_output))
 
 
 
